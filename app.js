@@ -60,14 +60,15 @@ function renderizarProductos() {
     fila.innerHTML = `
       <td>${index + 1}</td>
       <td>${p.nombre}</td>
-      <td>${p.categoria}</td>
+      <td><span class="badge bg-primary">${p.categoria}</span></td>
       <td>$${parseFloat(p.precio).toFixed(2)}</td>
-      <td>${p.stock}</td>
+      <td>${p.descripcion.substring(0, 30)}...</td>
+      <td><span class="badge ${p.estado === 'Activo' ? 'bg-success' : 'bg-danger'}">${p.estado}</span></td>
       <td>
-    <button class="btn btn-warning btn-sm me-2" onclick="editarProducto(${p.id})">
-        <i class="fas fa-edit"></i>
-    </button>
-</td>
+        <button class="btn btn-warning btn-sm me-2" onclick="editarProducto(${p.id})">
+          <i class="fas fa-edit"></i>
+        </button>
+      </td>
     `;
     tbody.appendChild(fila);
   });
@@ -98,6 +99,23 @@ function mostrarSeccion(seccion) {
     // Actualizar menú activo
     document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
     event.target.classList.add('active');
+}
+
+function eliminarProducto(id) {
+    Swal.fire({
+        title: '¿Eliminar producto?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            productos = productos.filter(p => p.id !== id);
+            renderizarProductos();
+            mostrarAlerta('Producto eliminado correctamente', 'success');
+        }
+    });
 }
 
 // VALIDACIÓN DE CAMPOS ACTUALIZADA (2.0)
@@ -160,9 +178,11 @@ document.getElementById('formProducto').addEventListener('submit', function(e) {
         idEditando = null;
         document.getElementById('btnSubmit').innerHTML = '<i class="fas fa-plus"></i> Agregar Producto';
     }
+
     
     this.reset();
 });
+
 
 // Renderizar productos al cargar la página
 renderizarProductos();
