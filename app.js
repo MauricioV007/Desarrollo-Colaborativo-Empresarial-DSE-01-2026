@@ -1,31 +1,43 @@
 // CLASE PRODUCTO
 class Producto {
-  constructor(id, nombre, categoria, precio, stock) {
-    this.id = id;
-    this.nombre = nombre;
-    this.categoria = categoria;
-    this.precio = precio;
-    this.stock = stock;
-  }
+    constructor(id, nombre, precio, categoria, descripcion, estado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.categoria = categoria;
+        this.descripcion = descripcion;
+        this.estado = estado;
+    }
 }
+
 // ARRAY DE PRODUCTOS (datos iniciales)
-let productos = [
-  new Producto(1, "Laptop HP", "Electrónica", 799.99, 5),
-  new Producto(2, "Mouse Inalámbrico", "Accesorios", 25.99, 20),
-  new Producto(3, "Teclado Mecánico", "Accesorios", 59.99, 15),
+const productos = [
+    new Producto(1, "Laptop Gaming", 1299.99, "Electrónicos", "Gaming laptop con RTX 3060", "Activo"),
+    new Producto(2, "iPhone 14 Pro", 999.00, "Electrónicos", "128GB Deep Purple", "Activo"),
+    new Producto(3, "Mesa de comedor", 299.99, "Hogar", "Madera maciza 6 sillas", "Activo"),
+    new Producto(4, "Cafetera Nespresso", 149.99, "Hogar", "Modelo Vertuo", "Inactivo"),
+    new Producto(5, "Silla gamer", 249.99, "Hogar", "Ergonómica RGB", "Activo")
 ];
+
 let contadorId = productos.length + 1;
-// FUNCIÓN PARA AGREGAR PRODUCTO
-function agregarProducto(nombre, categoria, precio, stock) {
-  const nuevoProducto = new Producto(
-    contadorId++,
-    nombre,
-    categoria,
-    parseFloat(precio),
-    parseInt(stock)
-  );
-  productos.push(nuevoProducto);
-  renderizarProductos();
+
+//Array categorias
+
+const categorias = [
+    "Electrónicos",
+    "Ropa", 
+    "Hogar",
+    "Deportes",
+    "Libros"
+];
+
+// FUNCIÓN PARA AGREGAR PRODUCTO ACTUALIZADO!!!! (2.0)
+function agregarProducto(nombre, precio, categoria, descripcion, estado) {
+    const id = productos.length > 0 ? Math.max(...productos.map(p => p.id)) + 1 : 1;
+    const nuevoProducto = new Producto(id, nombre, precio, categoria, descripcion, estado);
+    productos.push(nuevoProducto);
+    renderizarProductos();
+    mostrarAlerta('Producto agregado correctamente', 'success');
 }
 
 // RENDERIZAR PRODUCTOS EN EL DOM
@@ -54,18 +66,25 @@ function renderizarProductos() {
   });
 }
 
-// VALIDACIÓN DE CAMPOS
-function validarCampos(nombre, categoria, precio, stock) {
-  if (!nombre || !categoria || !precio || !stock) {
-    return "Todos los campos son obligatorios.";
-  }
-  if (isNaN(precio) || parseFloat(precio) <= 0) {
-    return "El precio debe ser un número mayor a 0.";
-  }
-  if (isNaN(stock) || parseInt(stock) < 0) {
-    return "El stock debe ser un número igual o mayor a 0.";
-  }
-  return null;
+// VALIDACIÓN DE CAMPOS ACTUALIZADA (2.0)
+function validarCampos(nombre, precio, categoria, descripcion, estado) {
+    if (!nombre || nombre.trim().length < 2) {
+        mostrarAlerta('El nombre debe tener al menos 2 caracteres', 'error');
+        return false;
+    }
+    if (!precio || precio <= 0) {
+        mostrarAlerta('El precio debe ser mayor a 0', 'error');
+        return false;
+    }
+    if (!categoria) {
+        mostrarAlerta('Selecciona una categoría', 'error');
+        return false;
+    }
+    if (!descripcion || descripcion.trim().length < 10) {
+        mostrarAlerta('La descripción debe tener al menos 10 caracteres', 'error');
+        return false;
+    }
+    return true;
 }
 
 // EVENTO SUBMIT DEL FORMULARIO
