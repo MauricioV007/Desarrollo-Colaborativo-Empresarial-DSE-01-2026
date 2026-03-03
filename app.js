@@ -23,6 +23,8 @@ let contadorId = productos.length + 1;
 
 //Array categorias
 
+let idEditando = null;
+
 const categorias = [
     "Electrónicos",
     "Ropa", 
@@ -61,9 +63,41 @@ function renderizarProductos() {
       <td>${p.categoria}</td>
       <td>$${parseFloat(p.precio).toFixed(2)}</td>
       <td>${p.stock}</td>
+      <td>
+    <button class="btn btn-warning btn-sm me-2" onclick="editarProducto(${p.id})">
+        <i class="fas fa-edit"></i>
+    </button>
+</td>
     `;
     tbody.appendChild(fila);
   });
+}
+
+ // Se agregó funcion de Agregar Productos
+function editarProducto(id) {
+    const producto = productos.find(p => p.id === id);
+    if (producto) {
+        document.getElementById('nombre').value = producto.nombre;
+        document.getElementById('precio').value = producto.precio;
+        document.getElementById('categoria').value = producto.categoria;
+        document.getElementById('descripcion').value = producto.descripcion;
+        document.getElementById('estado').value = producto.estado;
+        document.getElementById('btnSubmit').textContent = 'Actualizar Producto';
+        idEditando = id;
+        mostrarSeccion('crear');
+    }
+}
+
+// FUNCION DE MOSTRAR SECCIÓN ACTUALIZADA
+
+function mostrarSeccion(seccion) {
+    // Ocultar todas las secciones
+    document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
+    // Mostrar sección seleccionada
+    document.getElementById('seccion' + seccion.charAt(0).toUpperCase() + seccion.slice(1)).classList.add('activa');
+    // Actualizar menú activo
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    event.target.classList.add('active');
 }
 
 // VALIDACIÓN DE CAMPOS ACTUALIZADA (2.0)
@@ -87,27 +121,47 @@ function validarCampos(nombre, precio, categoria, descripcion, estado) {
     return true;
 }
 
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Llenar select de categorías
+    categorias.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        document.getElementById('categoria').appendChild(option);
+    });
+
+    // Renderizar productos al cargar
+    renderizarProductos();
+
+});
+
 // EVENTO SUBMIT DEL FORMULARIO
-document.getElementById("formProducto").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const nombre = document.getElementById("nombre").value.trim();
-  const categoria = document.getElementById("categoria").value.trim();
-  const precio = document.getElementById("precio").value.trim();
-  const stock = document.getElementById("stock").value.trim();
-  const mensajeError = document.getElementById("mensajeError");
-
-  const error = validarCampos(nombre, categoria, precio, stock);
-
-  if (error) {
-    mensajeError.textContent = error;
-    mensajeError.classList.remove("d-none");
-    return;
-  }
-
-  mensajeError.classList.add("d-none");
-  agregarProducto(nombre, categoria, precio, stock);
-  this.reset();
+document.getElementById('formProducto').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const nombre = document.getElementById('nombre').value.trim();
+    const precio = parseFloat(document.getElementById('precio').value);
+    const categoria = document.getElementById('categoria').value;
+    const descripcion = document.getElementById('descripcion').value.trim();
+    const estado = document.getElementById('estado').value;
+    
+    if (!validarCampos(nombre, precio, categoria, descripcion, estado)) {
+        return;
+    }
+    
+    if (idEditando === null) {
+        // AGREGAR nuevo producto
+        agregarProducto(nombre, precio, categoria, descripcion, estado);
+    } else {
+        // ACTUALIZAR producto
+        actualizarProducto(idEditando, nombre, precio, categoria, descripcion, estado);
+        idEditando = null;
+        document.getElementById('btnSubmit').innerHTML = '<i class="fas fa-plus"></i> Agregar Producto';
+    }
+    
+    this.reset();
 });
 
 // Renderizar productos al cargar la página
