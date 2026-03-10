@@ -11,7 +11,6 @@ class Producto {
     }
 }
 
-
 // ARRAY DE PRODUCTOS (datos iniciales)
 let productos = [
     new Producto(1, "Laptop Gaming", 1299.99, "Electrónicos", 15, "Gaming laptop con RTX 3060", "Activo"),
@@ -20,7 +19,6 @@ let productos = [
     new Producto(4, "Cafetera Nespresso", 149.99, "Hogar", 0, "Modelo Vertuo", "Inactivo"),
     new Producto(5, "Silla gamer", 249.99, "Hogar", 12, "Ergonómica RGB", "Activo")
 ];
-
 
 // Array categorias
 const categorias = [
@@ -31,9 +29,7 @@ const categorias = [
     "Libros"
 ];
 
-
 let idEditando = null;
-
 
 // FUNCIÓN PARA AJUSTAR ESTADO SEGÚN CANTIDAD
 function ajustarEstado(cantidad, estadoManual, cantidadAnterior = null) {
@@ -50,7 +46,6 @@ function ajustarEstado(cantidad, estadoManual, cantidadAnterior = null) {
     // Si cantidad > 0, usar el estado manual seleccionado
     return estadoManual;
 }
-
 
 // FUNCIÓN PARA MOSTRAR ALERTAS
 function mostrarAlerta(mensaje, tipo) {
@@ -71,7 +66,6 @@ function mostrarAlerta(mensaje, tipo) {
     });
 }
 
-
 // FUNCIÓN PARA AGREGAR PRODUCTO
 function agregarProducto(nombre, precio, categoria, cantidad, descripcion, estadoManual) {
     // Ajustar estado según cantidad
@@ -88,7 +82,6 @@ function agregarProducto(nombre, precio, categoria, cantidad, descripcion, estad
         mostrarAlerta('Producto agregado correctamente', 'success');
     }
 }
-
 
 // FUNCIÓN PARA ACTUALIZAR PRODUCTO
 function actualizarProducto(id, nombre, precio, categoria, cantidad, descripcion, estadoManual) {
@@ -119,7 +112,6 @@ function actualizarProducto(id, nombre, precio, categoria, cantidad, descripcion
     }
 }
 
-
 // RENDERIZAR PRODUCTOS EN EL DOM
 function renderizarProductos() {
     const tbody = document.getElementById("tablaProductos");
@@ -132,9 +124,7 @@ function renderizarProductos() {
         return;
     }
 
-
     if (sinProductos) sinProductos.classList.add("d-none");
-
 
     productos.forEach((p, index) => {
         const fila = document.createElement("tr");
@@ -165,7 +155,6 @@ function renderizarProductos() {
     });
 }
 
-
 // FUNCIÓN PARA MOSTRAR SECCIÓN
 function mostrarSeccion(seccion, elemento) {
     // Ocultar todas las secciones
@@ -187,14 +176,200 @@ function mostrarSeccion(seccion, elemento) {
     if (seccion === 'listado') {
         renderizarProductos();
     }
+}
 
-    
-    this.reset();
-};
+// FUNCIÓN PARA EDITAR PRODUCTO
+function editarProducto(id) {
+    const producto = productos.find(p => p.id === id);
+    if (producto) {
+        // Cargar datos en formulario de editar
+        document.getElementById('nombreEditar').value = producto.nombre;
+        document.getElementById('precioEditar').value = producto.precio;
+        document.getElementById('categoriaEditar').value = producto.categoria;
+        document.getElementById('cantidadEditar').value = producto.cantidad;
+        document.getElementById('descripcionEditar').value = producto.descripcion;
+        document.getElementById('estadoEditar').value = producto.estado;
+       
+        // Deshabilitar select de estado si cantidad es 0
+        const selectEstado = document.getElementById('estadoEditar');
+        if (producto.cantidad === 0) {
+            selectEstado.disabled = true;
+        } else {
+            selectEstado.disabled = false;
+        }
+       
+        // Guardar ID
+        idEditando = id;
+       
+        // Mostrar sección de editar
+        mostrarSeccion('editar');
+    }
+}
 
+// FUNCIÓN PARA CANCELAR EDICIÓN
+function cancelarEdicion() {
+    idEditando = null;
+    document.getElementById('formEditar').reset();
+    // Habilitar el select de estado al cancelar
+    document.getElementById('estadoEditar').disabled = false;
+    mostrarSeccion('listado');
+}
 
-// Renderizar productos al cargar la página
-renderizarProductos();
+// FUNCIÓN PARA ELIMINAR PRODUCTO
+function eliminarProducto(id) {
+    Swal.fire({
+        title: '¿Eliminar producto?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            productos = productos.filter(p => p.id !== id);
+            renderizarProductos();
+            mostrarAlerta('Producto eliminado correctamente', 'success');
+        }
+    });
+}
 
+// VALIDACIÓN DE CAMPOS
+function validarCampos(nombre, precio, categoria, cantidad, descripcion) {
+    if (!nombre || nombre.trim().length < 2) {
+        mostrarAlerta('El nombre debe tener al menos 2 caracteres', 'error');
+        return false;
+    }
+    if (!precio || precio <= 0) {
+        mostrarAlerta('El precio debe ser mayor a 0', 'error');
+        return false;
+    }
+    if (!categoria) {
+        mostrarAlerta('Selecciona una categoría', 'error');
+        return false;
+    }
+    if (cantidad === null || cantidad === undefined || cantidad === '') {
+        mostrarAlerta('La cantidad es obligatoria', 'error');
+        return false;
+    }
+    if (cantidad < 0) {
+        mostrarAlerta('La cantidad no puede ser negativa', 'error');
+        return false;
+    }
+    if (!descripcion || descripcion.trim().length < 10) {
+        mostrarAlerta('La descripción debe tener al menos 10 caracteres', 'error');
+        return false;
+    }
+    return true;
+}
 
+// INICIALIZACIÓN AL CARGAR EL DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // Llenar select de categorías en AMBOS formularios
+    const selectCategoriaCrear = document.getElementById('categoriaCrear');
+    const selectCategoriaEditar = document.getElementById('categoriaEditar');
+   
+    categorias.forEach(cat => {
+        const optionCrear = document.createElement('option');
+        optionCrear.value = cat;
+        optionCrear.textContent = cat;
+        selectCategoriaCrear.appendChild(optionCrear);
+       
+        const optionEditar = document.createElement('option');
+        optionEditar.value = cat;
+        optionEditar.textContent = cat;
+        selectCategoriaEditar.appendChild(optionEditar);
+    });
 
+    // Renderizar productos al cargar
+    renderizarProductos();
+
+    // LISTENERS PARA ACTUALIZAR ESTADO AUTOMÁTICAMENTE CUANDO CAMBIA CANTIDAD
+   
+    // En formulario CREAR
+    document.getElementById('cantidadCrear').addEventListener('input', function() {
+        const cantidad = parseInt(this.value) || 0;
+        const selectEstado = document.getElementById('estadoCrear');
+       
+        if (cantidad === 0) {
+            selectEstado.value = 'Inactivo';
+            selectEstado.disabled = true; // Deshabilitar si cantidad es 0
+        } else {
+            selectEstado.disabled = false;
+            // Si estaba en Inactivo por cantidad 0, cambiar a Activo
+            if (selectEstado.value === 'Inactivo') {
+                selectEstado.value = 'Activo';
+            }
+        }
+    });
+   
+    // En formulario EDITAR
+    document.getElementById('cantidadEditar').addEventListener('input', function() {
+        const cantidad = parseInt(this.value) || 0;
+        const selectEstado = document.getElementById('estadoEditar');
+       
+        if (cantidad === 0) {
+            selectEstado.value = 'Inactivo';
+            selectEstado.disabled = true; // Deshabilitar si cantidad es 0
+        } else {
+            selectEstado.disabled = false;
+            // Si estaba en Inactivo, cambiar a Activo cuando aumenta cantidad
+            if (selectEstado.value === 'Inactivo') {
+                selectEstado.value = 'Activo';
+            }
+        }
+    });
+
+    // EVENTO SUBMIT DEL FORMULARIO CREAR
+    document.getElementById('formCrear').addEventListener('submit', function(e) {
+        e.preventDefault();
+       
+        const nombre = document.getElementById('nombreCrear').value.trim();
+        const precio = parseFloat(document.getElementById('precioCrear').value);
+        const categoria = document.getElementById('categoriaCrear').value;
+        const cantidad = parseInt(document.getElementById('cantidadCrear').value);
+        const descripcion = document.getElementById('descripcionCrear').value.trim();
+        const estado = document.getElementById('estadoCrear').value;
+       
+        if (!validarCampos(nombre, precio, categoria, cantidad, descripcion)) {
+            return;
+        }
+       
+        agregarProducto(nombre, precio, categoria, cantidad, descripcion, estado);
+       
+        // Limpiar formulario
+        this.reset();
+    });
+    // EVENTO SUBMIT DEL FORMULARIO EDITAR
+    document.getElementById('formEditar').addEventListener('submit', function(e) {
+        e.preventDefault();
+       
+        // Habilitar el select de estado temporalmente para poder leer su valor
+        const selectEstado = document.getElementById('estadoEditar');
+        const wasDisabled = selectEstado.disabled;
+        selectEstado.disabled = false;
+       
+        const nombre = document.getElementById('nombreEditar').value.trim();
+        const precio = parseFloat(document.getElementById('precioEditar').value);
+        const categoria = document.getElementById('categoriaEditar').value;
+        const cantidad = parseInt(document.getElementById('cantidadEditar').value);
+        const descripcion = document.getElementById('descripcionEditar').value.trim();
+        const estado = selectEstado.value;
+       
+        // Restaurar el estado deshabilitado si era necesario
+        if (wasDisabled) selectEstado.disabled = true;
+       
+        if (!validarCampos(nombre, precio, categoria, cantidad, descripcion)) {
+            return;
+        }
+       
+        if (idEditando !== null) {
+            actualizarProducto(idEditando, nombre, precio, categoria, cantidad, descripcion, estado);
+            idEditando = null;
+            this.reset();
+            selectEstado.disabled = false; // Habilitar al limpiar
+            mostrarSeccion('listado');
+        }
+    });
+});
