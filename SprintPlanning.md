@@ -111,15 +111,15 @@ Implementar la funcionalidad Delete sobre el sistema de gestión de productos, d
 
 ## Tareas Planificadas
 
-| # | Tarea                                                 | Responsable      | Issue | Estado       |
-| - | ----------------------------------------------------- | ---------------- | ----- | ------------ |
-| 1 | Crear rama feature/delete                             | Mauricio Vaquero | #12   | ✅ Done      |
-| 2 | Revision y coreccion clases, arrays y funciones core | Jonathan Tejada  | #13   | ⬜ Pendiente |
-| 3 | Correciones, funciones de edicion e iniciacion        | René Lemus      | #14   | ⬜ Pendiente |
-| 4 | Edicion html, head y navbar                           | Alicia Guzmán   | #15   | ⬜ Pendiente |
-| 5 | Secciones footer                                      | Jonathan Tejada  | #16   | ⬜ Pendiente |
-| 6 | PR feature/delete → develop                          | Xiomara Cisneros | #17   | ⬜ Pendiente |
-| 7 | PR develop → main                                    | Mauricio Vaquero | #18   | ⬜ Pendiente |
+| # | Tarea                                                 | Responsable      | Issue | Estado  |
+| - | ----------------------------------------------------- | ---------------- | ----- | ------- |
+| 1 | Crear rama feature/delete                             | Mauricio Vaquero | #12   | ✅ Done |
+| 2 | Revision y coreccion clases, arrays y funciones core | Jonathan Tejada  | #13   | ✅ Done |
+| 3 | Correciones, funciones de edicion e iniciacion        | René Lemus      | #14   | ✅ Done |
+| 4 | Edicion html, head y navbar                           | Alicia Guzmán   | #15   | ✅ Done |
+| 5 | Secciones footer                                      | Jonathan Tejada  | #16   | ✅ Done |
+| 6 | PR feature/delete → develop                          | Xiomara Cisneros | #17   | ✅ Done |
+| 7 | PR develop → main                                    | Mauricio Vaquero | #18   | ✅ Done |
 
 ## Definición de Hecho (DoD)
 
