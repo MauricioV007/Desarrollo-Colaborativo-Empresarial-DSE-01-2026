@@ -17,7 +17,37 @@ let productos = [
     new Producto(2, "iPhone 14 Pro", 999.00, "Electrónicos", 25, "128GB Deep Purple", "Activo"),
     new Producto(3, "Mesa de comedor", 299.99, "Hogar", 8, "Madera maciza 6 sillas", "Activo"),
     new Producto(4, "Cafetera Nespresso", 149.99, "Hogar", 0, "Modelo Vertuo", "Inactivo"),
-    new Producto(5, "Silla gamer", 249.99, "Hogar", 12, "Ergonómica RGB", "Activo")
+    new Producto(5, "Silla gamer", 249.99, "Hogar", 12, "Ergonómica RGB", "Activo"),
+    new Producto(6, "Monitor LG 4K", 399.99, "Electrónicos", 10, "Monitor ultrapanorámico 34 pulgadas", "Activo"),
+    new Producto(7, "Teclado Mecánico", 159.99, "Electrónicos", 20, "RGB switches Cherry MX Brown", "Activo"),
+    new Producto(8, "Auriculares Sony", 299.99, "Electrónicos", 5, "Noise Cancelling WH-1000XM5", "Activo"),
+    new Producto(9, "Escritorio Gaming", 499.99, "Hogar", 3, "Escritorio de madera con LED RGB", "Activo"),
+    new Producto(10, "Lámpara LED", 79.99, "Hogar", 0, "Lámpara inteligente regulable", "Inactivo"),
+    new Producto(11, "Mouse Logitech", 49.99, "Electrónicos", 30, "Mouse inalámbrico con batería larga", "Activo"),
+    new Producto(12, "Mousepad Grande", 29.99, "Hogar", 15, "Mousepad XXL para escritorio gaming", "Activo"),
+    new Producto(13, "Cable HDMI 2.1", 15.99, "Electrónicos", 50, "Cable HDMI 8K de 2 metros", "Activo"),
+    new Producto(14, "Webcam Logitech", 89.99, "Electrónicos", 8, "Webcam Full HD con micrófono", "Activo"),
+    new Producto(15, "Hub USB", 39.99, "Electrónicos", 0, "Hub USB 3.0 con 7 puertos", "Inactivo"),
+    new Producto(16, "Tablet Samsung", 799.99, "Electrónicos", 12, "Galaxy Tab S8 128GB", "Activo"),
+    new Producto(17, "Smartwatch Apple", 399.99, "Electrónicos", 7, "Apple Watch Series 8 45mm", "Activo"),
+    new Producto(18, "Cargador Rápido", 24.99, "Electrónicos", 40, "Cargador USB-C 65W PD", "Activo"),
+    new Producto(19, "Funda Laptop", 34.99, "Hogar", 18, "Funda neopreno 15.6 pulgadas", "Activo"),
+    new Producto(20, "Soporte Monitor", 44.99, "Hogar", 9, "Soporte ajustable para monitor", "Activo"),
+    new Producto(21, "Teclado Inalámbrico", 69.99, "Electrónicos", 14, "Teclado inalámbrico compacto", "Activo"),
+    new Producto(22, "Cable Ethernet", 9.99, "Electrónicos", 100, "Cable Ethernet Cat6 5 metros", "Activo"),
+    new Producto(23, "Micrófono Condenser", 129.99, "Electrónicos", 6, "Micrófono cardioide XLR", "Activo"),
+    new Producto(24, "Almohada Ergonómica", 59.99, "Hogar", 22, "Almohada de espuma viscoelástica", "Activo"),
+    new Producto(25, "Ventilador Escritorio", 39.99, "Hogar", 0, "Ventilador de escritorio silencioso", "Inactivo"),
+    new Producto(26, "Powerbank 20000mAh", 49.99, "Electrónicos", 25, "Batería portátil con carga rápida", "Activo"),
+    new Producto(27, "Audífonos Bluetooth", 79.99, "Electrónicos", 11, "Audífonos inalámbricos TWS", "Activo"),
+    new Producto(28, "Organizador Escritorio", 34.99, "Hogar", 20, "Organizador de madera con 5 niveles", "Activo"),
+    new Producto(29, "Protector Pantalla", 14.99, "Electrónicos", 60, "Protector vidrio templado 27 pulgadas", "Activo"),
+    new Producto(30, "Dock Cargador", 89.99, "Electrónicos", 4, "Dock de carga magnético para laptop", "Activo"),
+    new Producto(31, "Mochila Gaming", 89.99, "Hogar", 13, "Mochila resistente al agua 17 pulgadas", "Activo"),
+    new Producto(32, "Filtro HEPA Aire", 79.99, "Hogar", 8, "Purificador de aire inteligente", "Activo"),
+    new Producto(33, "Foco LED Inteligente", 19.99, "Hogar", 0, "Bombilla inteligente RGB WiFi", "Inactivo"),
+    new Producto(34, "Router WiFi 6", 159.99, "Electrónicos", 5, "Router ASUS WiFi 6 gigabit", "Activo"),
+    new Producto(35, "Cascos Gaming", 119.99, "Electrónicos", 9, "Cascos con sonido envolvente 7.1", "Activo")
 ];
 
 // Array categorias
@@ -30,6 +60,9 @@ const categorias = [
 ];
 
 let idEditando = null;
+
+// VARIABLE PARA ALMACENAR EL TÉRMINO DE BÚSQUEDA (SPRINT 4)
+let terminoBusqueda = '';
 
 // FUNCIÓN PARA AJUSTAR ESTADO SEGÚN CANTIDAD
 function ajustarEstado(cantidad, estadoManual, cantidadAnterior = null) {
@@ -235,34 +268,123 @@ function eliminarProducto(id) {
     });
 }
 
+// ===== SPRINT 4: BÚSQUEDA Y FILTRADO DINÁMICO =====
+
+// FUNCIÓN PARA FILTRAR PRODUCTOS POR NOMBRE
+function filtrarProductos(termino) {
+    terminoBusqueda = termino.toLowerCase().trim();
+   
+    if (terminoBusqueda === '') {
+        // Si está vacío, mostrar todos
+        renderizarProductos();
+    } else {
+        // Filtrar y renderizar
+        const productosFiltrados = productos.filter(p =>
+            p.nombre.toLowerCase().includes(terminoBusqueda)
+        );
+       
+        renderizarProductosFiltrados(productosFiltrados);
+    }
+}
+
+// FUNCIÓN PARA RENDERIZAR PRODUCTOS FILTRADOS
+function renderizarProductosFiltrados(productosList) {
+    const tbody = document.getElementById("tablaProductos");
+    const sinProductos = document.getElementById("sinProductos");
+    tbody.innerHTML = "";
+
+    if (productosList.length === 0) {
+        if (sinProductos) sinProductos.classList.remove("d-none");
+        if (sinProductos) sinProductos.innerHTML = `
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <p class="text-muted">No hay productos que coincidan con la búsqueda</p>
+        `;
+        return;
+    }
+
+    if (sinProductos) sinProductos.classList.add("d-none");
+
+    productosList.forEach((p, index) => {
+        const fila = document.createElement("tr");
+       
+        // Colorear fila si cantidad es 0
+        if (p.cantidad === 0) {
+            fila.style.backgroundColor = "#ffe6e6";
+            fila.title = "Producto sin stock";
+        }
+       
+        fila.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${p.nombre}</td>
+            <td>$${parseFloat(p.precio).toFixed(2)}</td>
+            <td><span class="badge bg-primary">${p.categoria}</span></td>
+            <td><strong>${p.cantidad}</strong></td>
+            <td>${p.descripcion.substring(0, 30)}...</td>
+            <td><span class="badge ${p.estado === 'Activo' ? 'bg-success' : 'bg-danger'}">${p.estado}</span></td>
+            <td>
+                <button class="btn btn-warning btn-sm me-2" onclick="editarProducto(${p.id})" title="Editar producto">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="eliminarProducto(${p.id})" title="Eliminar producto">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
+            </td>
+        `;
+        tbody.appendChild(fila);
+    });
+}
+
 // VALIDACIÓN DE CAMPOS
 function validarCampos(nombre, precio, categoria, cantidad, descripcion) {
-    if (!nombre || nombre.trim().length < 2) {
+    // Limpiar nombre y descripción
+    const nombreLimpio = nombre.trim();
+    const descripcionLimpia = descripcion.trim();
+    
+    // Validar nombre
+    if (!nombreLimpio || nombreLimpio.length < 2) {
         mostrarAlerta('El nombre debe tener al menos 2 caracteres', 'error');
         return false;
     }
-    if (!precio || precio <= 0) {
-        mostrarAlerta('El precio debe ser mayor a 0', 'error');
+    
+    // Validar precio
+    const precioNum = parseFloat(precio);
+    if (isNaN(precioNum) || precioNum <= 0) {
+        mostrarAlerta('El precio debe ser un número mayor a 0', 'error');
         return false;
     }
+    
+    if (precioNum > 999999.99) {
+        mostrarAlerta('El precio no puede exceder $999,999.99', 'error');
+        return false;
+    }
+    
+    // Validar categoría
     if (!categoria) {
         mostrarAlerta('Selecciona una categoría', 'error');
         return false;
     }
-    if (cantidad === null || cantidad === undefined || cantidad === '') {
-        mostrarAlerta('La cantidad es obligatoria', 'error');
+    
+    // Validar cantidad
+    const cantidadNum = parseInt(cantidad);
+    if (isNaN(cantidadNum) || cantidad === null || cantidad === undefined || cantidad === '') {
+        mostrarAlerta('La cantidad es obligatoria y debe ser un número', 'error');
         return false;
     }
-    if (cantidad < 0) {
+    
+    if (cantidadNum < 0) {
         mostrarAlerta('La cantidad no puede ser negativa', 'error');
         return false;
     }
-    if (!descripcion || descripcion.trim().length < 10) {
+    
+    // Validar descripción
+    if (!descripcionLimpia || descripcionLimpia.length < 10) {
         mostrarAlerta('La descripción debe tener al menos 10 caracteres', 'error');
         return false;
     }
+    
     return true;
 }
+
 
 // INICIALIZACIÓN AL CARGAR EL DOM
 document.addEventListener('DOMContentLoaded', function() {
@@ -321,15 +443,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // EVENTO SUBMIT DEL FORMULARIO CREAR
+});
+
+    // LISTENER PARA BÚSQUEDA 
+    const campoBusqueda = document.getElementById('busquedaProducto');
+    if (campoBusqueda) {
+        campoBusqueda.addEventListener('input', function() {
+            filtrarProductos(this.value);
+        });
+    }
+
+ // EVENTO SUBMIT DEL FORMULARIO CREAR
     document.getElementById('formCrear').addEventListener('submit', function(e) {
         e.preventDefault();
        
-        const nombre = document.getElementById('nombreCrear').value.trim();
+        const nombre = document.getElementById('nombreCrear').value;
         const precio = parseFloat(document.getElementById('precioCrear').value);
         const categoria = document.getElementById('categoriaCrear').value;
         const cantidad = parseInt(document.getElementById('cantidadCrear').value);
-        const descripcion = document.getElementById('descripcionCrear').value.trim();
+        const descripcion = document.getElementById('descripcionCrear').value;
         const estado = document.getElementById('estadoCrear').value;
        
         if (!validarCampos(nombre, precio, categoria, cantidad, descripcion)) {
@@ -350,11 +482,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const wasDisabled = selectEstado.disabled;
         selectEstado.disabled = false;
        
-        const nombre = document.getElementById('nombreEditar').value.trim();
+        const nombre = document.getElementById('nombreEditar').value;
         const precio = parseFloat(document.getElementById('precioEditar').value);
         const categoria = document.getElementById('categoriaEditar').value;
         const cantidad = parseInt(document.getElementById('cantidadEditar').value);
-        const descripcion = document.getElementById('descripcionEditar').value.trim();
+        const descripcion = document.getElementById('descripcionEditar').value;
         const estado = selectEstado.value;
        
         // Restaurar el estado deshabilitado si era necesario
@@ -371,5 +503,5 @@ document.addEventListener('DOMContentLoaded', function() {
             selectEstado.disabled = false; // Habilitar al limpiar
             mostrarSeccion('listado');
         }
-    });
 });
+
