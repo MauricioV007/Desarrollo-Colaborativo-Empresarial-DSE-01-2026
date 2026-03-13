@@ -1,4 +1,6 @@
-\# Sprint 1 — Create \& Read Dinámico
+
+<h1>Sprint 1 — Create y read Dinámico</h1>
+
 
 \## ¿Qué se hizo?
 
@@ -27,7 +29,8 @@ en sistema dinámico con JavaScript puro.
 Estructura Git lista\*
 
 
-**# Sprint 2 — Edit Dinámico
+<h1>Sprint 2 — Edit Dinámico</h1>
+
 
 ## ¿Qué se hizo?
 
@@ -89,5 +92,37 @@ CRUD completo ✅
 * develop → main (Merge)
 * Todos los issues cerrados
 * Funcionalidad Delete implementada
+
+**
+
+
+<h1>Sprint 4 — Búsqueda y Filtrado Dinámico</h1>
+
+
+## ¿Qué se hizo?
+
+Se implementó la funcionalidad de búsqueda y filtrado dinámico, permitiendo filtrar productos por nombre sin recargar la página.
+
+## ¿Quién hizo qué?
+
+| Integrante | Rol | Tarea |
+
+|------------|-----|-------|
+
+| Mauricio Vaquero | Product Owner | Rama feature/filter, PRs |
+
+| Xiomara Cisneros | Scrum Master | Issues, Revisión PR |
+
+| Jonathan Tejada | Developer | Función filtrar por nombre + Render dinámico |
+
+| Alicia Guzmán | Developer | Campo de búsqueda HTML + Event listener |
+
+## Estado
+
+Búsqueda y filtrado funcional
+
+* feature/filter → develop (Merge)
+* develop → main (Merge)
+* Todos los issues cerrado
 
 **

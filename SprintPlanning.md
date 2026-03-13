@@ -89,7 +89,8 @@ y estado, y alertas con SweetAlert2.
 Xiomara Cisneros
 
 
-**# SPRINT PLANNING — SPRINT 3
+<h1>SPRINT PLANNING - SPRINT 3 </h1>
+
 
 ## Fecha de Inicio
 
@@ -131,3 +132,61 @@ Implementar la funcionalidad Delete sobre el sistema de gestión de productos, d
 ## Scrum Master
 
 Xiomara Cisneros
+
+
+
+
+# SPRINT PLANNING — SPRINT 4
+
+## Fecha de Inicio
+
+17/03/2026
+
+## Objetivo del Sprint
+
+Implementar búsqueda y filtrado dinámico sobre el sistema de gestión
+
+de productos, permitiendo filtrar por nombre sin recargar la página.
+
+## Equipo
+
+| Integrante       | Rol           |
+
+|------------------|---------------|
+
+| Mauricio Vaquero | Product Owner |
+
+| Xiomara Cisneros | Scrum Master  |
+
+| Jonathan Tejada  | Developer     |
+
+| Alicia Guzmán    | Developer     |
+
+## Tareas Planificadas
+
+| # | Tarea | Responsable | Issue | Estado |
+
+|---|-------|-------------|-------|--------|
+
+| 1 | Crear rama feature/filter | Mauricio Vaquero | #19 | ✅ Done |
+
+| 2 | Implementar campo de búsqueda HTML + listener | Alicia Guzmán | #20 | ⬜ Pendiente |
+
+| 3 | Función filtrar y render dinámico | Jonathan Tejada | #21 | ⬜ Pendiente |
+
+| 4 | PR feature/filter → develop | Xiomara Cisneros | #22 | ⬜ Pendiente |
+
+| 5 | PR develop → main | Mauricio Vaquero | #23 | ⬜ Pendiente |
+
+## Definición de Hecho (DoD)
+
+- Código funcional en rama `feature/filter`
+- PR revisado y aprobado por Scrum Master
+- Merge hacia `develop` y luego `develop` → `main`
+- Issues cerrados correctamente
+
+## Scrum Master
+
+Xiomara Cisneros
+
+**
